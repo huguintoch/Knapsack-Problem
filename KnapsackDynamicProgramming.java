@@ -41,8 +41,26 @@ class KnapsackDynamicProgramming {
         dp[i][c] = Math.max(profit1, profit2);
       }
     }
+
+    this.printSelectedElements(dp, weights, profits, capacity);
+
     // maximum profit will be at the bottom-right corner.
     return dp[n-1][capacity];
+  }
+
+  private void printSelectedElements(int dp[][], int[] weights, int[] profits, int capacity){
+    System.out.print("Selected weights:");
+    int totalProfit = dp[weights.length-1][capacity];
+    for(int i=weights.length-1; i > 0; i--) {
+      if(totalProfit != dp[i-1][capacity]) {
+        System.out.print(" " + weights[i]);
+        capacity -= weights[i];
+        totalProfit -= profits[i];
+      }
+    }
+    if(totalProfit != 0)
+      System.out.print(" " + weights[0]);
+    System.out.println("");
   }
 
   public static void main(String[] args) {
@@ -79,10 +97,7 @@ class KnapsackDynamicProgramming {
       KnapsackDynamicProgramming ks = new KnapsackDynamicProgramming();
       int maxProfit = ks.solveKnapsack(profits, weights, w);
 
-      long endTime = System.nanoTime();
-      System.out.println("Took "+(endTime - startTime) + " ns");
-
-      System.out.println("Total knapsack profit ---> " + maxProfit);
+      System.out.println("Total knapsack profit:" + maxProfit);      
 
 		  br.close();
 		}catch(FileNotFoundException e){
