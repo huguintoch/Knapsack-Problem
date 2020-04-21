@@ -1,99 +1,54 @@
-// Java program to solve fractional Knapsack Problem 
-import java.util.Arrays; 
-import java.util.Comparator; 
-  
-// Greedy approach 
-public class Knapsack 
-{ 
-	
-	static long startTime = System.nanoTime();
+public class Knapsack {
 
-	// code
+    static double startTime = System.nanoTime();
 
+    public static void main(String[] args) {
+        Integer[] weights = {2,3,5,6,4};
+        Integer[] values = {6,1,12,8,7};
+        int n = 5;
+        int totalWeight = 11;
+        Greedy(totalWeight, values, weights, n);
+        double endTime = System.nanoTime();
+        System.out.println("Took "+(endTime - startTime)/1000000000 + " sec");
+    }
 
+    public static void Greedy(int maxWeight, Integer[] values, Integer[] weights, Integer n) {
+        Float[] densities = new Float[n];
+        for(int i = 0; i < n; i++) {
+            densities[i] = (float)values[i]/weights[i];
+        }
 
-  
-    // function to get maximum value 
-    private static double getMaxValue(int[] wt, 
-                        int[] val, int capacity) 
-    { 
-        ItemValue[] iVal = new ItemValue[wt.length]; 
-  
-        for(int i = 0; i < wt.length; i++) 
-        { 
-            iVal[i] = new ItemValue(wt[i], val[i], i); 
-        } 
-  
-        //sorting items by value; 
-        Arrays.sort(iVal, new Comparator<ItemValue>()  
-        { 
-            @Override
-            public int compare(ItemValue o1, ItemValue o2)  
-            { 
-                return o2.cost.compareTo(o1.cost) ; 
-            } 
-        }); 
-  
-  
-        double totalValue = 0d; 
-  
-        for(ItemValue i: iVal) 
-        { 
-  
-            int curWt = (int) i.wt; 
-            int curVal = (int) i.val; 
-  
-            if (capacity - curWt >= 0) 
-            { 
-                // this weight can be picked while 
-                capacity = capacity-curWt; 
-                totalValue += curVal; 
-  
-            } 
-            else
-            { 
-                // item cant be picked whole 
-                double fraction = ((double)capacity/(double)curWt); 
-                totalValue += (curVal*fraction); 
-                capacity = (int)(capacity - (curWt*fraction)); 
-                break; 
-            } 
-  
-  
-        } 
-  
-        return totalValue; 
-    } 
-  
-    // item value class 
-    static class ItemValue  
-    { 
-        Double cost; 
-        double wt, val, ind; 
-          
-        // item value function 
-        public ItemValue(int wt, int val, int ind) 
-        { 
-            this.wt = wt; 
-            this.val = val; 
-            this.ind = ind; 
-            cost = new Double(val/wt ); 
-        } 
-    } 
-    
-    // Time complexity O(n log n) 
-    public static void main(String[] args) 
-    { 
-        int[] wt = {10, 40, 20, 30}; 
-        int[] val = {60, 40, 100, 120}; 
-        int capacity = 50; 
-  
-        double maxValue = getMaxValue(wt, val, capacity); 
-        System.out.println("Maximum value we can obtain = " +  
-                            maxValue); 
+        Sort.quicksort(densities, values, weights);
         
-    	long endTime = System.nanoTime();
-    	System.out.println("Took "+(endTime - startTime) + " ns"); 
-  
-    } 
-} 
+        for(int i=0; i<densities.length/2; i++){
+            Integer tempValue = values[i];
+            values[i] = values[values.length-i-1];
+            values[values.length-i-1] = tempValue;
+            Integer tempWeight = weights[i];
+            weights[i] = weights[weights.length-i-1];
+            weights[weights.length-i-1] = tempWeight;
+            Float tempDensity = densities[i];
+            densities[i] = densities[densities.length-i-1];
+            densities[densities.length-i-1] = tempDensity;
+        }
+
+        boolean[] solution = new boolean[n];
+
+        int sumWeight = maxWeight;
+        for(int i = 0; i < n && weights[i] <= sumWeight; i++) {
+            solution[i] = true;
+            sumWeight = sumWeight - weights[i];
+        }
+
+        int finalBenefit = 0;
+        for(int i = 0; i < solution.length; i++) {
+            if(solution[i]) {
+                finalBenefit += values[i];
+                System.out.println("Object with value: "+values[i]+" , weight: "+weights[i]+" and density: "+densities[i]);
+            }
+        }
+
+        System.out.println("Final benefit: "+finalBenefit);
+    }
+
+}
