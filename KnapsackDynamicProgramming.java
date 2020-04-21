@@ -1,3 +1,9 @@
+import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 class KnapsackDynamicProgramming {
 
   public int solveKnapsack(int[] profits, int[] weights, int capacity) {
@@ -40,6 +46,7 @@ class KnapsackDynamicProgramming {
 
     Scanner sc = new Scanner(System.in);
     String route = sc.nextLine();
+    System.out.println(route);
 
     try {
 		  BufferedReader br = new BufferedReader(new FileReader(route));
@@ -62,7 +69,7 @@ class KnapsackDynamicProgramming {
       s = br.readLine().split(" "); // Get maxWeight
   		int w = Integer.parseInt(s[0]);
 
-      Knapsack ks = new Knapsack();
+      KnapsackDynamicProgramming ks = new KnapsackDynamicProgramming();
       int maxProfit = ks.solveKnapsack(profits, weights, w);
       System.out.println("Total knapsack profit ---> " + maxProfit);
 
