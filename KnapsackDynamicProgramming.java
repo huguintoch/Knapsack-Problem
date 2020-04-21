@@ -1,8 +1,8 @@
-import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 class KnapsackDynamicProgramming {
 
@@ -50,20 +50,28 @@ class KnapsackDynamicProgramming {
       String[] s = br.readLine().split(" "); // Get n
   		int n = Integer.parseInt(s[0]);
 
+      System.out.println(n);
+
       s = br.readLine().split(" "); // Get profits
       int[] profits = new int[n];
       for(int i=0; i<n; i++){
-        profits[i] = Integer.parseInt(s[0]);
+        profits[i] = Integer.parseInt(s[i]);
       }
+
+      System.out.println(Arrays.toString(profits));
 
       s = br.readLine().split(" "); // Get weights
       int[] weights = new int[n];
       for(int i=0; i<n; i++){
-        weights[i] = Integer.parseInt(s[0]);
+        weights[i] = Integer.parseInt(s[i]);
       }
 
+      System.out.println(Arrays.toString(weights));
+
       s = br.readLine().split(" "); // Get maxWeight
-  		int w = Integer.parseInt(s[0]);
+      int w = Integer.parseInt(s[0]);
+      
+      System.out.println(w);
 
       KnapsackDynamicProgramming ks = new KnapsackDynamicProgramming();
       int maxProfit = ks.solveKnapsack(profits, weights, w);
