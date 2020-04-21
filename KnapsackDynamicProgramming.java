@@ -44,12 +44,8 @@ class KnapsackDynamicProgramming {
 
   public static void main(String[] args) {
 
-    Scanner sc = new Scanner(System.in);
-    String route = sc.nextLine();
-    System.out.println(route);
-
     try {
-		  BufferedReader br = new BufferedReader(new FileReader(route));
+		  BufferedReader br = new BufferedReader(new FileReader(args[0]));
 
       String[] s = br.readLine().split(" "); // Get n
   		int n = Integer.parseInt(s[0]);
