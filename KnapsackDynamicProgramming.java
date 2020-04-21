@@ -38,8 +38,11 @@ class KnapsackDynamicProgramming {
 
   public static void main(String[] args) {
 
+    Scanner sc = new Scanner(System.in);
+    String route = sc.nextLine();
+
     try {
-		  BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+		  BufferedReader br = new BufferedReader(new FileReader(route));
 
       String[] s = br.readLine().split(" "); // Get n
   		int n = Integer.parseInt(s[0]);
@@ -65,9 +68,9 @@ class KnapsackDynamicProgramming {
 
 		  br.close();
 		}catch(FileNotFoundException e){
-			System.out.println("No se localizó el archivo " +e);
+			System.out.println("No se localizó el archivo " + e);
 		}catch(IOException e){
-			System.out.println("Ocurrió un error de I/O" +e);
+			System.out.println("Ocurrió un error de I/O" + e);
 		}
 
   }
