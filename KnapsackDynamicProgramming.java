@@ -1,3 +1,5 @@
+// Reference: https://www.educative.io/courses/grokking-dynamic-programming-patterns-for-coding-interviews/RM1BDv71V60#top-down-dynamic-programming-with-memoization
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -5,6 +7,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 class KnapsackDynamicProgramming {
+
+  static long startTime = System.nanoTime();
 
   public int solveKnapsack(int[] profits, int[] weights, int capacity) {
     // basic checks
@@ -37,7 +41,6 @@ class KnapsackDynamicProgramming {
         dp[i][c] = Math.max(profit1, profit2);
       }
     }
-
     // maximum profit will be at the bottom-right corner.
     return dp[n-1][capacity];
   }
@@ -75,6 +78,10 @@ class KnapsackDynamicProgramming {
 
       KnapsackDynamicProgramming ks = new KnapsackDynamicProgramming();
       int maxProfit = ks.solveKnapsack(profits, weights, w);
+
+      long endTime = System.nanoTime();
+      System.out.println("Took "+(endTime - startTime) + " ns");
+
       System.out.println("Total knapsack profit ---> " + maxProfit);
 
 		  br.close();
