@@ -70,7 +70,7 @@ public class Knapsack {
             writer.write("Weights used: ");
             for(int i=0;i<used.length;i++) {
                 if(used[i] != 0)
-                    writer.write(used[i] + " ");
+                    writer.write(used[i] + ", ");
             }
             writer.write("\n");
             writer.close();
