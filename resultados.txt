@@ -1,2 +1,2 @@
 MaxProfit: 190
-Weights used: 20 5 
+Weights used: 20, 5, 
