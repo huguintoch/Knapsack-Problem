@@ -10,22 +10,68 @@ public class Knapsack {
             BufferedReader br = new BufferedReader(new FileReader("Prueba.txt"));
 
             String[] s = br.readLine().split(" "); // Get n
-            int n = Integer.parseInt(s[0]);
-
+            int n = 0;
+            try {
+                n = Integer.parseInt(s[0]);
+            } catch (NumberFormatException e) {
+                System.out.println("La cantidad de elementos en la mochila debe ser un número.");
+            }
+            
             s = br.readLine().split(" "); // Get profits
             int[] profits = new int[n];
-            for (int i = 0; i < n; i++) {
-                profits[i] = Integer.parseInt(s[i]);
+            try {
+                for (int i = 0; i < n; i++) {
+                    profits[i] = Integer.parseInt(s[i]);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("El beneficio de todos los objetos debe ser representado con un número.");
+				br.close();
+				return;
             }
-
+            
             s = br.readLine().split(" "); // Get weights
             int[] weights = new int[n];
-            for (int i = 0; i < n; i++) {
-                weights[i] = Integer.parseInt(s[i]);
+            try {
+                for (int i = 0; i < n; i++) {
+                    weights[i] = Integer.parseInt(s[i]);
+                    if(weights[i]==0) {
+						System.out.println("El peso del objeto en el indice " + i + " no puede ser 0.");
+						br.close();
+						return;
+					}
+                }
+            } catch(NumberFormatException e) {
+                System.out.println("El peso de todos los objetos debe ser mayor a 0.");
+				br.close();
+				return;
+            }
+            
+            s = br.readLine().split(" "); // Get maxWeight
+            int w = 0;
+            try {
+                w = Integer.parseInt(s[0]);
+                if(w==0) {
+					System.out.println("El peso máximo de la mochila debe ser mayor a 0.");
+					br.close();
+					return;
+				}
+            } catch (Exception e) {
+                System.out.println("El peso máximo de la mochila debe ser representado con un número.");
+				br.close();
+				return;
             }
 
-            s = br.readLine().split(" "); // Get maxWeight
-            int w = Integer.parseInt(s[0]);
+            if(weights.length != profits.length) {
+				System.out.println("Se debe introducir una misma cantidad de pesos como de beneficios.");
+				br.close();
+				return;
+			}
+			
+			if(profits.length==0 || weights.length==0) {
+				System.out.println("Se debe ingresar por lo menos un peso y un beneficio.");
+				br.close();
+				return;
+			}
 
             Greedy(w, profits, weights, n);
             double endTime = System.nanoTime();
@@ -33,9 +79,9 @@ public class Knapsack {
 
             br.close();
         } catch (FileNotFoundException e) {
-            System.out.println("No se localizó el archivo " + e);
+            System.out.println("No se localizó el archivo: " + e);
         } catch (IOException e) {
-            System.out.println("Ocurrió un error de I/O" + e);
+            System.out.println("Ocurrió un error de I/O: " + e);
         }
     }
 
