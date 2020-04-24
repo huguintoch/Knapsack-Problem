@@ -6,6 +6,9 @@ public class Knapsack {
     static double endTime;
 
     public static void main(String[] args) {
+        int maxProfit = 0;
+        boolean[] solution;
+        Integer[] positions;
         try {
             //BufferedReader br = new BufferedReader(new FileReader(args[0]));
             BufferedReader br = new BufferedReader(new FileReader("Prueba.txt"));
@@ -75,34 +78,62 @@ public class Knapsack {
 				br.close();
 				return;
             }
-
-            if(weights.length != profits.length) {
-				System.out.println("Se debe introducir una misma cantidad de pesos como de beneficios.");
-				br.close();
-				return;
-			}
 			
 			if(profits.length==0 || weights.length==0) {
 				System.out.println("Se debe ingresar por lo menos un peso y un beneficio.");
 				br.close();
 				return;
-			}
-            startTime = System.nanoTime();
-            Greedy(w, profits, weights, n);
+            }
             
-            System.out.println("Took " + (endTime - startTime) / 1000000000 + " sec");
+            solution = new boolean[n];
+            positions = new Integer[n];
+            startTime = System.nanoTime();
 
+            try {
+                maxProfit = Greedy(n, w, profits, weights, solution, positions);
+            }catch(NumberFormatException e) {
+                System.out.println("Los números generados no caben dentro de un entero.");
+                br.close();
+                return;
+            }
+
+            endTime = System.nanoTime();
+            System.out.println("Took " + (endTime - startTime) / 1000000000 + " sec");
             br.close();
         } catch (FileNotFoundException e) {
             System.out.println("No se localizó el archivo: " + e);
         } catch (IOException e) {
             System.out.println("Ocurrió un error de I/O: " + e);
         }
+
+        try {
+            int file = 0;
+            file = Integer.parseInt(args[0].charAt(3)+"");
+            if(file==0) 
+                file = 10;
+            
+            FileWriter fileWriter;
+            if(file!=10) {
+                fileWriter = new FileWriter("res_ga0"+file+".txt");
+            }else {
+                fileWriter = new FileWriter("res_ga"+file+".txt");
+            }
+            BufferedWriter writer = new BufferedWriter(fileWriter);
+            writer.write(maxProfit + "\n");
+            // for(int i=0;i<solution.length;i++) {
+            //     if(solution[i]) {
+            //         writer.write(positions[i].toString()+" ");
+            //     } 
+            // }
+            writer.write("\n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error de I/O" + e);
+        }
     }
 
-    public static void Greedy(int maxWeight, int[] profits, int[] weights, int n) {
+    public static int Greedy(int n, int maxWeight, int[] profits, int[] weights, boolean[] solution, Integer[] positions) {
         Float[] densities = new Float[n];
-        Integer[] positions = new Integer[n];
         for(int i = 0; i < n; i++) {
             densities[i] = (float)profits[i]/weights[i];
             positions[i] = i;
@@ -110,34 +141,15 @@ public class Knapsack {
 
         Sort.mergesort(densities, positions);
         
-        boolean[] solution = new boolean[n];
         int sumWeight = maxWeight;
         int maxProfit = 0;
-        try {
-            for(int i = n-1; i >= 0 && weights[positions[i]] <= sumWeight; i--) {
-                solution[i] = true;
-                maxProfit += profits[positions[i]];
-                sumWeight = sumWeight - weights[positions[i]];
-            }
-        }catch(NumberFormatException e) {
-            System.out.println("Los números generados no caben dentro de un entero.");
-            return;
+
+        for(int i = n-1; i >= 0 && weights[positions[i]] <= sumWeight; i--) {
+            solution[i] = true;
+            maxProfit += profits[positions[i]];
+            sumWeight = sumWeight - weights[positions[i]];
         }
         
-        endTime = System.nanoTime();
-
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("resultados.txt"));
-            writer.write(maxProfit + "\n");
-            for(int i=0;i<solution.length;i++) {
-                if(solution[i]) {
-                    writer.write(positions[i].toString()+" ");
-                } 
-            }
-            writer.write("\n");
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Ocurrió un error de I/O" + e);
-        }
+        return maxProfit;
     }
 }
