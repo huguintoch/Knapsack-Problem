@@ -10,8 +10,8 @@ public class Knapsack {
         boolean[] solution;
         Integer[] positions;
         try {
-            //BufferedReader br = new BufferedReader(new FileReader(args[0]));
-            BufferedReader br = new BufferedReader(new FileReader("Prueba.txt"));
+            BufferedReader br = new BufferedReader(new FileReader(args[0]));
+            //BufferedReader br = new BufferedReader(new FileReader("Prueba.txt"));
 
             String[] s = br.readLine().split(" "); // Get n
             int n = 0;
@@ -100,36 +100,38 @@ public class Knapsack {
             endTime = System.nanoTime();
             System.out.println("Took " + (endTime - startTime) / 1000000000 + " sec");
             br.close();
+
+            try {
+                int file = 0;
+                file = Integer.parseInt(args[0].charAt(3)+"");
+                if(file==0) 
+                    file = 10;
+                
+                FileWriter fileWriter;
+                if(file!=10) {
+                    fileWriter = new FileWriter("res_ga0"+file+".txt");
+                }else {
+                    fileWriter = new FileWriter("res_ga"+file+".txt");
+                }
+                BufferedWriter writer = new BufferedWriter(fileWriter);
+                writer.write(maxProfit + "\n");
+                for(int i=0;i<solution.length;i++) {
+                    if(solution[i]) {
+                        writer.write(positions[i].toString()+" ");
+                    } 
+                }
+                writer.write("\n");
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Ocurrió un error de I/O" + e);
+            }
         } catch (FileNotFoundException e) {
             System.out.println("No se localizó el archivo: " + e);
         } catch (IOException e) {
             System.out.println("Ocurrió un error de I/O: " + e);
         }
 
-        try {
-            int file = 0;
-            file = Integer.parseInt(args[0].charAt(3)+"");
-            if(file==0) 
-                file = 10;
-            
-            FileWriter fileWriter;
-            if(file!=10) {
-                fileWriter = new FileWriter("res_ga0"+file+".txt");
-            }else {
-                fileWriter = new FileWriter("res_ga"+file+".txt");
-            }
-            BufferedWriter writer = new BufferedWriter(fileWriter);
-            writer.write(maxProfit + "\n");
-            // for(int i=0;i<solution.length;i++) {
-            //     if(solution[i]) {
-            //         writer.write(positions[i].toString()+" ");
-            //     } 
-            // }
-            writer.write("\n");
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Ocurrió un error de I/O" + e);
-        }
+        
     }
 
     public static int Greedy(int n, int maxWeight, int[] profits, int[] weights, boolean[] solution, Integer[] positions) {
