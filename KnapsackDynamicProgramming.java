@@ -50,7 +50,7 @@ class KnapsackDynamicProgramming {
 			int index = 0;
 			for(int i=weights.length-1; i > 0; i--) {
 				if(totalProfit != dp[i-1][capacity]) {
-					used[index] = weights[i];
+					used[index] = i;
 					capacity -= weights[i];
 					totalProfit -= profits[i];
 					index++;
@@ -164,21 +164,20 @@ class KnapsackDynamicProgramming {
 				
 				FileWriter fileWriter;
 				if(file!=10) {
-					fileWriter = new FileWriter("pg0"+file+".txt");
+					fileWriter = new FileWriter("res_dp0"+file+".txt");
 				}else {
-					fileWriter = new FileWriter("pg"+file+".txt");
+					fileWriter = new FileWriter("res_dp"+file+".txt");
 				}
+					
 				
 				BufferedWriter writer = new BufferedWriter(fileWriter);
 				writer.write(maxProfit + "\n");
 				int[] used = getSelectedElements(dpMain, weights, profits, w);
-				writer.write("Weights used: ");
 				for(int i=0;i<used.length;i++) {
 					if(used[i]!=0)
 						writer.write(used[i] + " ");
 				}
 				writer.write("\n");
-				writer.write("Matrix: \n");
 				for(int i=0;i<dpMain.length;i++) {
 					for(int j=0;j<dpMain[0].length;j++) {
 						writer.write(dpMain[i][j] + " ");
