@@ -21,9 +21,9 @@ public class Knapsack {
             }
             
             s = br.readLine().split(" "); // Get profits
-            int[] profits = new int[n];
+            int[] profits = new int[s.length];
             try {
-                for (int i = 0; i < n; i++) {
+                for (int i = 0; i < s.length; i++) {
                     profits[i] = Integer.parseInt(s[i]);
                 }
             } catch (NumberFormatException e) {
@@ -33,9 +33,9 @@ public class Knapsack {
             }
             
             s = br.readLine().split(" "); // Get weights
-            int[] weights = new int[n];
+            int[] weights = new int[s.length];
             try {
-                for (int i = 0; i < n; i++) {
+                for (int i = 0; i < s.length; i++) {
                     weights[i] = Integer.parseInt(s[i]);
                     if(weights[i]==0) {
 						System.out.println("El peso del objeto en el indice " + i + " no puede ser 0.");
@@ -48,6 +48,18 @@ public class Knapsack {
 				br.close();
 				return;
             }
+
+            if(weights.length != profits.length) {
+				System.out.println("Se debe ingresar el mismo número de beneficios y pesos.");
+				br.close();
+				return;
+			}
+			
+			if(weights.length != n) {
+				System.out.println("El número de elementos no concuerda con los objetos ingresados.");
+				br.close();
+				return;
+			}
             
             s = br.readLine().split(" "); // Get maxWeight
             int w = 0;
