@@ -89,6 +89,10 @@ class KnapsackDynamicProgramming {
 				System.out.println("El beneficio de todos los objetos debe ser representado con un número.");
 				br.close();
 				return;
+			}catch(ArrayIndexOutOfBoundsException e) {
+				System.out.println("Se deben ingresar el mismo número de pesos y beneficios.");
+				br.close();
+				return;
 			}
 			
 			//System.out.println("Profits: " + Arrays.toString(profits));
@@ -108,9 +112,11 @@ class KnapsackDynamicProgramming {
 				System.out.println("El peso de todos los objetos debe ser mayor a 0.");
 				br.close();
 				return;
+			}catch(ArrayIndexOutOfBoundsException e) {
+				System.out.println("Se deben ingresar el mismo número de pesos y beneficios.");
+				br.close();
+				return;
 			}
-			
-			
 			
 			//System.out.println("Weights: " + Arrays.toString(weights));
 
@@ -129,12 +135,6 @@ class KnapsackDynamicProgramming {
 				return;
 			}
 			
-			
-			if(weights.length != profits.length) {
-				System.out.println("Se debe introducir una misma cantidad de pesos como de beneficios.");
-				br.close();
-				return;
-			}
 			
 			if(profits.length==0 || weights.length==0) {
 				System.out.println("Se debe ingresar por lo menos un peso y un beneficio.");
@@ -157,16 +157,16 @@ class KnapsackDynamicProgramming {
       
 			try {
 				int file = 0;
-				file = args[0].charAt(3);
+				file = Integer.parseInt(args[0].charAt(3)+"");
 
 				if(file==0) 
 					file = 10;
 				
 				FileWriter fileWriter;
 				if(file!=10) {
-					fileWriter = new FileWriter("ga0"+file+".txt");
+					fileWriter = new FileWriter("pg0"+file+".txt");
 				}else {
-					fileWriter = new FileWriter("ga"+file+".txt");
+					fileWriter = new FileWriter("pg"+file+".txt");
 				}
 				
 				BufferedWriter writer = new BufferedWriter(fileWriter);
