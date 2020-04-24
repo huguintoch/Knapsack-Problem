@@ -13,13 +13,13 @@ public class Knapsack {
             int n = Integer.parseInt(s[0]);
 
             s = br.readLine().split(" "); // Get profits
-            Integer[] profits = new Integer[n];
+            int[] profits = new int[n];
             for (int i = 0; i < n; i++) {
                 profits[i] = Integer.parseInt(s[i]);
             }
 
             s = br.readLine().split(" "); // Get weights
-            Integer[] weights = new Integer[n];
+            int[] weights = new int[n];
             for (int i = 0; i < n; i++) {
                 weights[i] = Integer.parseInt(s[i]);
             }
@@ -39,38 +39,32 @@ public class Knapsack {
         }
     }
 
-    public static void Greedy(int maxWeight, Integer[] profits, Integer[] weights, int n) {
+    public static void Greedy(int maxWeight, int[] profits, int[] weights, int n) {
         Float[] densities = new Float[n];
+        Integer[] positions = new Integer[n];
         for(int i = 0; i < n; i++) {
             densities[i] = (float)profits[i]/weights[i];
+            positions[i] = i;
         }
 
-        Sort.quicksort(densities, profits, weights);
+        Sort.mergesort(densities, positions);
         
         boolean[] solution = new boolean[n];
         int sumWeight = maxWeight;
-
-        for(int i = n-1; i >= 0 && weights[i] <= sumWeight; i--) {
-            solution[i] = true;
-            sumWeight = sumWeight - weights[i];
-        }
-
         int maxProfit = 0;
-        int[] used = new int[n];
-        for(int i = 0; i < solution.length; i++) {
-            if(solution[i]) {
-                maxProfit += profits[i];
-                used[i] = weights[i];
-            }
+        for(int i = n-1; i >= 0 && weights[positions[i]] <= sumWeight; i--) {
+            solution[i] = true;
+            maxProfit += profits[positions[i]];
+            sumWeight = sumWeight - weights[positions[i]];
         }
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("resultados.txt"));
-            writer.write("MaxProfit: " + maxProfit + "\n");
-            writer.write("Weights used: ");
-            for(int i=0;i<used.length;i++) {
-                if(used[i] != 0)
-                    writer.write(used[i] + ", ");
+            writer.write(maxProfit + "\n");
+            for(int i=0;i<solution.length;i++) {
+                if(solution[i]) {
+                    writer.write(positions[i].toString()+" ");
+                } 
             }
             writer.write("\n");
             writer.close();
@@ -78,5 +72,4 @@ public class Knapsack {
             System.out.println("Ocurrió un error de I/O" + e);
         }
     }
-
 }
