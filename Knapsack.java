@@ -2,7 +2,8 @@ import java.io.*;
 
 public class Knapsack {
 
-    static double startTime = System.nanoTime();
+    static double startTime;
+    static double endTime;
 
     public static void main(String[] args) {
         try {
@@ -15,6 +16,8 @@ public class Knapsack {
                 n = Integer.parseInt(s[0]);
             } catch (NumberFormatException e) {
                 System.out.println("La cantidad de elementos en la mochila debe ser un número.");
+                br.close();
+                return;
             }
             
             s = br.readLine().split(" "); // Get profits
@@ -72,9 +75,9 @@ public class Knapsack {
 				br.close();
 				return;
 			}
-
+            startTime = System.nanoTime();
             Greedy(w, profits, weights, n);
-            double endTime = System.nanoTime();
+            
             System.out.println("Took " + (endTime - startTime) / 1000000000 + " sec");
 
             br.close();
@@ -98,11 +101,18 @@ public class Knapsack {
         boolean[] solution = new boolean[n];
         int sumWeight = maxWeight;
         int maxProfit = 0;
-        for(int i = n-1; i >= 0 && weights[positions[i]] <= sumWeight; i--) {
-            solution[i] = true;
-            maxProfit += profits[positions[i]];
-            sumWeight = sumWeight - weights[positions[i]];
+        try {
+            for(int i = n-1; i >= 0 && weights[positions[i]] <= sumWeight; i--) {
+                solution[i] = true;
+                maxProfit += profits[positions[i]];
+                sumWeight = sumWeight - weights[positions[i]];
+            }
+        }catch(NumberFormatException e) {
+            System.out.println("Los números generados no caben dentro de un entero.");
+            return;
         }
+        
+        endTime = System.nanoTime();
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("resultados.txt"));
