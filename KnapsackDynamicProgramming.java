@@ -14,7 +14,7 @@ class KnapsackDynamicProgramming {
 	
 	private static int[][] dpMain;
 
-	public int solveKnapsack(int[] profits, int[] weights, int capacity) {
+	public static int solveKnapsack(int[] profits, int[] weights, int capacity) {
 		// Edge cases
 		if (capacity <= 0 || profits.length == 0 || weights.length != profits.length)
 			return 0;
@@ -25,7 +25,6 @@ class KnapsackDynamicProgramming {
 		// Fill profits with 0 when weight is 0
 		for(int i=0; i < n; i++)
 			dp[i][0] = 0;
-
 		// If we have only one weight, we will take it if it is not more than the capacity
 		for(int c=0; c <= capacity; c++) {
 			if(weights[0] <= c)
@@ -96,8 +95,7 @@ class KnapsackDynamicProgramming {
 			int w = Integer.parseInt(s[0]);
 			//System.out.println("Maximum weight: " + w);
 
-			KnapsackDynamicProgramming ks = new KnapsackDynamicProgramming();
-			maxProfit = ks.solveKnapsack(profits, weights, w);
+			maxProfit = KnapsackDynamicProgramming.solveKnapsack(profits, weights, w);
 			//System.out.println("Total knapsack profit: " + maxProfit);      
 
       		br.close();
