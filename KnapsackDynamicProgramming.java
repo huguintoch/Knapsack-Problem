@@ -9,12 +9,14 @@ import java.io.IOException;
 
 class KnapsackDynamicProgramming {
 
-	static long startTime = System.nanoTime();
+	static long startTime,
+				endTime;
 	
 	private static int[][] dpMain;
 
 	public static int solveKnapsack(int[] profits, int[] weights, int capacity) {
-		// Edge cases
+		
+		startTime = System.nanoTime();
 
 		int n = profits.length;
 		int[][] dp = new int[n][capacity + 1];
@@ -40,6 +42,7 @@ class KnapsackDynamicProgramming {
 		}
 
 		dpMain = dp;
+		endTime = System.nanoTime() - startTime;
 		return dp[n-1][capacity];
 	}
 
@@ -116,7 +119,7 @@ class KnapsackDynamicProgramming {
 				return;
 			}
 			
-			if(weights.length != n || profits.length !=n) {
+			if(weights.length != n) {
 				System.out.println("El número de elementos no concuerda con los objetos ingresados.");
 				br.close();
 				return;
