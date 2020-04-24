@@ -9,12 +9,14 @@ import java.io.IOException;
 
 class KnapsackDynamicProgramming {
 
-	static long startTime = System.nanoTime();
+	static long startTime,
+				endTime;
 	
 	private static int[][] dpMain;
 
 	public static int solveKnapsack(int[] profits, int[] weights, int capacity) {
-		// Edge cases
+		
+		startTime = System.nanoTime();
 
 		int n = profits.length;
 		int[][] dp = new int[n][capacity + 1];
@@ -40,6 +42,7 @@ class KnapsackDynamicProgramming {
 		}
 
 		dpMain = dp;
+		endTime = System.nanoTime() - startTime;
 		return dp[n-1][capacity];
 	}
 
@@ -50,7 +53,7 @@ class KnapsackDynamicProgramming {
 			int index = 0;
 			for(int i=weights.length-1; i > 0; i--) {
 				if(totalProfit != dp[i-1][capacity]) {
-					used[index] = i;
+					used[index] = weights[i];
 					capacity -= weights[i];
 					totalProfit -= profits[i];
 					index++;
@@ -80,17 +83,13 @@ class KnapsackDynamicProgramming {
 			//System.out.println("# of elements: " + n);
 
 			s = br.readLine().split(" "); // Get profits
-			int[] profits = new int[n];
+			int[] profits = new int[s.length];
 			try {
-				for(int i=0; i<n; i++){
+				for(int i=0; i<s.length; i++){
 					profits[i] = Integer.parseInt(s[i]);
 				}
 			}catch(NumberFormatException e) {
 				System.out.println("El beneficio de todos los objetos debe ser representado con un número.");
-				br.close();
-				return;
-			}catch(ArrayIndexOutOfBoundsException e) {
-				System.out.println("Se deben ingresar el mismo número de pesos y beneficios.");
 				br.close();
 				return;
 			}
@@ -98,9 +97,9 @@ class KnapsackDynamicProgramming {
 			//System.out.println("Profits: " + Arrays.toString(profits));
 
 			s = br.readLine().split(" "); // Get weights
-			int[] weights = new int[n];
+			int[] weights = new int[s.length];
 			try {
-				for(int i=0; i<n; i++){
+				for(int i=0; i<s.length; i++){
 					weights[i] = Integer.parseInt(s[i]);
 					if(weights[i]==0) {
 						System.out.println("El peso del objeto en el indice " + i + " no puede ser 0.");
@@ -112,8 +111,16 @@ class KnapsackDynamicProgramming {
 				System.out.println("El peso de todos los objetos debe ser mayor a 0.");
 				br.close();
 				return;
-			}catch(ArrayIndexOutOfBoundsException e) {
-				System.out.println("Se deben ingresar el mismo número de pesos y beneficios.");
+			}
+			
+			if(weights.length != profits.length) {
+				System.out.println("Se debe ingresar el mismo número de beneficios y pesos.");
+				br.close();
+				return;
+			}
+			
+			if(weights.length != n) {
+				System.out.println("El número de elementos no concuerda con los objetos ingresados.");
 				br.close();
 				return;
 			}
@@ -164,20 +171,21 @@ class KnapsackDynamicProgramming {
 				
 				FileWriter fileWriter;
 				if(file!=10) {
-					fileWriter = new FileWriter("res_dp0"+file+".txt");
+					fileWriter = new FileWriter("pg0"+file+".txt");
 				}else {
-					fileWriter = new FileWriter("res_dp"+file+".txt");
+					fileWriter = new FileWriter("pg"+file+".txt");
 				}
-					
 				
 				BufferedWriter writer = new BufferedWriter(fileWriter);
 				writer.write(maxProfit + "\n");
 				int[] used = getSelectedElements(dpMain, weights, profits, w);
+				writer.write("Weights used: ");
 				for(int i=0;i<used.length;i++) {
 					if(used[i]!=0)
 						writer.write(used[i] + " ");
 				}
 				writer.write("\n");
+				writer.write("Matrix: \n");
 				for(int i=0;i<dpMain.length;i++) {
 					for(int j=0;j<dpMain[0].length;j++) {
 						writer.write(dpMain[i][j] + " ");
